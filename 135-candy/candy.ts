@@ -1,34 +1,45 @@
 function candy(ratings: number[]): number {
+
+    var n = ratings.length;
+    var ratingWithIndex = Array(n);
+
+    for(var i =0;i<n;i++){
+    ratingWithIndex[i] = new RatingWithIndex(ratings[i],i);
+
+    }
+
+
+    var candies = Array(n).fill(1);
+
+
+    ratingWithIndex.sort((a,b)=>a.rating - b.rating);
     
-    var added = true;
-    var candies = Array(ratings.length).fill(1);
-    while(added){
-        added = false;
-        for(var i = 0;i<ratings.length; i++){
-            var leftRating = i == 0 ? ratings[i] : ratings[i-1];
-            var rightRating = i == ratings.length -1 ? ratings[i]: ratings [i+1];
+    for(var i =0;i<n;i++){
+        var ratingAndIndex = ratingWithIndex[i];
+        var index = ratingAndIndex.index;
+        var rating = ratingAndIndex.rating;
 
-            var rating = ratings[i];
-            var candy = candies[i];
+        var leftRating = index > 0 ? ratings[index-1]: ratings[0];
+        var rightRating = index < n-1 ? ratings[index+1]: ratings[index];
 
-            if(rating > leftRating){
-                if(candy <= candies[i-1]){
-                    candies[i] = candies[i-1]+1;
-                    added = true;
-                }
+
+        if(rating > leftRating){
+            if(candies[index] <= candies[index-1]){
+                candies[index] = candies[index-1] + 1;
             }
+        }
 
-            if(rating > rightRating){
-                if(candy <= candies[i+1]){
-                    candies[i] = candies[i+1] + 1;
-                    added = true;
-                }
+        if(rating > rightRating){
+            if(candies[index] <= candies[index+1]){
+                candies[index] = candies[index+1] +1;
             }
-
         }
     }
 
-    return candies.reduce((prev,add)=>prev+add);
-
-
+    return candies.reduce((a,b) => a+b);
 };
+
+
+class RatingWithIndex{
+    constructor(public rating, public index){}
+}
