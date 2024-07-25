@@ -11,6 +11,7 @@ function candy(ratings: number[]): number {
 
     var candies = Array(n).fill(1);
 
+    var totalCandy = 0;
 
     ratingWithIndex.sort((a,b)=>a.rating - b.rating);
     
@@ -34,9 +35,11 @@ function candy(ratings: number[]): number {
                 candies[index] = candies[index+1] +1;
             }
         }
+
+        totalCandy += candies[index];
     }
 
-    return candies.reduce((a,b) => a+b);
+    return totalCandy;
 };
 
 
